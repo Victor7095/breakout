@@ -1,9 +1,10 @@
 # Breakout
 
-## Integrantes
+## Contributors
 
 - Bruno França : https://github.com/BrunoThe13th
-- José Jordan : xxx.snf19@uea.edu.br
-- Murilo Acácio : xxx.snf19@uea.edu.br
-- Paulo André : xxx.snf19@uea.edu.br
+- Ivan Portales : https://github.com/ivanportales
+- José Jordan : https://github.com/JordanJose
+- Murilo Acácio : https://github.com/Murillo-Acacio
+- Paulo André : https://github.com/Pauloacf
 - Victor Yan Pereira e Lima : https://github.com/Victor7095
