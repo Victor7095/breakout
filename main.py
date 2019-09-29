@@ -66,6 +66,18 @@ def racket_right():
         x = 280
     racket.setx(x)
 
+# angulação da bola ao rebater na raquete
+def angle():
+    x1 = racket.xcor()
+    x2 = ball.xcor()
+    signal = 1 if ball.dx >= 0 else -1
+    dist_of_points = ((x2-x1)**2)**(0.5)
+    racket_angle = (dist_of_points//17.5)+1
+    if(dist_of_points >=0 and dist_of_points < 1):
+        return 0
+    else:
+        return signal*(1+(racket_angle/10))
+
 screen.listen()
 screen.onkeypress(racket_left, 'Left')
 screen.onkeypress(racket_right, 'Right')
@@ -125,6 +137,7 @@ while hasLives:
     if(ball.ycor() < -200 and ball.ycor() > -205 and ball.xcor() < racket.xcor() + 70 and
             ball.xcor() > racket.xcor() - 70):
         ball.dy *= -1
+        ball.dx = angle()
 
     # testanto se a bola passa da cory da raquete
     if(ball_pass()):
