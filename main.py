@@ -26,6 +26,31 @@ racket.color("blue")
 racket.penup()
 racket.sety(-220)
 
+# Movimentando a raquete
+
+# Esquerda
+def racket_left():
+    x = racket.xcor()
+    if x > -290:
+        x -= 20
+    else:
+        x = -290
+    racket.setx(x)
+
+# Direita
+
+def racket_right():
+    x = racket.xcor()
+    if x < 290:
+        x += 20
+    else:
+        x = 290
+    racket.setx(x)
+
+screen.listen()
+screen.onkeypress(racket_left, 'a')
+screen.onkeypress(racket_right, 'd')
+
 # desenhando os blocos
 x = -300
 y = 220
