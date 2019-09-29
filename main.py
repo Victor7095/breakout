@@ -66,14 +66,6 @@ for i in block_colors:
     y -= 30
     x = -300
 
-# função que testa se a bola passou da raquete
-def ball_pass():
-    global ball
-    global racket
-    if(ball.ycor() < racket.ycor()):
-        return True
-    return False
-
 # isso é só pra tentar deixar a criação de hud numa função só, se acharem merda podem apagar
 def create_hud(shape,color):
     hud = turtle.Turtle()
@@ -83,9 +75,24 @@ def create_hud(shape,color):
     hud.penup()
     return hud
 
-# acho que o nome da variável fala por si só né 
+# função que testa se a bola passou da raquete
+def ball_pass():
+    global ball
+    global racket
+    if(ball.ycor() < racket.ycor()):
+        return True
+    return False
+
+# to ligado que lives = 0 é contra-intuitivo, mas ajuda na manipulação dos lives_hud 
 hasLives = True
-lives = 3
+lives = 0
+
+# criando uma lista de hud das vidinhas, botei uma tortuguinha pq é mt fofinho
+lives_hud = []
+for i in range(0,3):
+    hud = create_hud("turtle","red")
+    hud.goto(-340+(30*i),-210) # isso se chama gambiarra, e sim vou mudar a posição das vidas pra cima, mas só quando arrumarem a parte superior da tela e tal
+    lives_hud.append(hud)
 
 while hasLives:
     screen.update()
@@ -113,7 +120,8 @@ while hasLives:
 
     # testanto se a bola passa da cory da raquete
     if(ball_pass()):
-        lives -= 1
-        if(lives < 1):
+        lives_hud[lives].hideturtle()
+        lives += 1
+        if(lives >= 3):
             hasLives = False
         ball.goto(0,0)
