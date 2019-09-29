@@ -96,15 +96,15 @@ def ball_pass():
         return True
     return False
 
-# to ligado que lives = 0 é contra-intuitivo, mas ajuda na manipulação dos lives_hud 
+# aqui to setando a quantidade de vidas e criando a variavel que é testada no laço principal do jogo
 hasLives = True
-lives = 0
+lives = 3
 
 # criando uma lista de hud das vidinhas, botei uma tortuguinha pq é mt fofinho
 lives_hud = []
 for i in range(0,3):
     live_hud = create_hud("turtle","red")
-    live_hud.goto(-340+(30*i),215) # isso se chama gambiarra, e sim vou mudar a posição das vidas pra cima, mas só quando arrumarem a parte superior da tela e tal
+    live_hud.goto(-330+(30*i),215) # isso se chama gambiarra, e sim vou mudar a posição das vidas pra cima, mas só quando arrumarem a parte superior da tela e tal
     lives_hud.append(live_hud)
 
 while hasLives:
@@ -134,8 +134,8 @@ while hasLives:
 
     # testanto se a bola passa da cory da raquete
     if(ball_pass()):
+        lives -= 1
         lives_hud[lives].hideturtle()
-        lives += 1
-        if(lives >= 3):
+        if(lives == 0):
             hasLives = False
         ball.goto(0,0)
