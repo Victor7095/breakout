@@ -82,6 +82,13 @@ while True:
     # Colisão com a parede direita
     if(ball.xcor() > 350):
         ball.dx *= -1
+    
     # Colisão com a parede esquerda
     elif(ball.xcor() < -350):
         ball.dx *= -1
+
+    # Colisão com a raquete
+
+    if(ball.ycor() < -200 and ball.xcor() < racket.xcor() + 70 and 
+            ball.xcor() > racket.xcor() - 70):
+        ball.dy *= -1
