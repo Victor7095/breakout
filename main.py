@@ -34,7 +34,7 @@ scoreboard.penup()
 scoreboard.hideturtle()
 scoreboard.goto(0, 200)
 scoreboard.write("Score : {}            Life : {}".format(score, life),
-                 align="center", font=("Press Start 2P", 20, "normal"))
+                 align="center", font=("Press Start 2P", 12, "normal"))
 
 # Desenhando a bola.
 ball = create_hud("circle","white")
@@ -122,7 +122,7 @@ while hasLives:
         ball.dx *= -1
 
     # Colisão com a raquete
-    if(ball.ycor() < -200 and ball.xcor() < racket.xcor() + 70 and
+    if(ball.ycor() < -200 and ball.ycor() > -205 and ball.xcor() < racket.xcor() + 70 and
             ball.xcor() > racket.xcor() - 70):
         ball.dy *= -1
 
