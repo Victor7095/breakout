@@ -20,6 +20,22 @@ screen.bgcolor("black")
 screen.setup(720, 480)
 screen.tracer(0)
 
+# pontuação
+score = 0
+
+# vidas
+life = "3 tartaruginha S2"
+
+# display de pontuação e vida
+scoreboard = turtle.Turtle("square")
+scoreboard.speed(0)
+scoreboard.color("white")
+scoreboard.penup()
+scoreboard.hideturtle()
+scoreboard.goto(0, 200)
+scoreboard.write("Score : {}            Life : {}".format(score, life),
+                 align="center", font=("Press Start 2P", 20, "normal"))
+
 # Desenhando a bola.
 ball = create_hud("circle","white")
 ball.goto(0, 0)
@@ -35,28 +51,28 @@ racket.sety(-220)
 # Esquerda
 def racket_left():
     x = racket.xcor()
-    if x > -290:
-        x -= 20
+    if x > -285:
+        x -= 30
     else:
-        x = -290
+        x = -285
     racket.setx(x)
 
 # Direita
 def racket_right():
     x = racket.xcor()
-    if x < 290:
-        x += 20
+    if x < 280:
+        x += 30
     else:
-        x = 290
+        x = 280
     racket.setx(x)
 
 screen.listen()
-screen.onkeypress(racket_left, 'a')
-screen.onkeypress(racket_right, 'd')
+screen.onkeypress(racket_left, 'Left')
+screen.onkeypress(racket_right, 'Right')
 
 # desenhando os blocos
 x = -300
-y = 220
+y = 180
 block_colors = ["red", "orange", "yellow", "green", "blue"]
 for i in block_colors:
     while x <= 320:
