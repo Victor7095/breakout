@@ -1,3 +1,4 @@
+import random
 import sys
 import turtle
 import time
@@ -15,8 +16,8 @@ ball.speed(0)
 ball.color("white")
 ball.penup()
 ball.goto(0, 0)
-ball.dx = 0.2
-ball.dy = -0.2
+ball.dx = random.choice((-1, 1)) * 1
+ball.dy = random.choice((-1, 1)) * 1.7
 
 # Desenhando raquete.
 racket = turtle.Turtle("square")
@@ -69,3 +70,18 @@ for i in block_colors:
 
 while True:
     screen.update()
+
+    # movimentando a bola
+    ball.sety(ball.ycor() + ball.dy)
+    ball.setx(ball.xcor() + ball.dx)
+
+    # Colisão com a parede superior
+    if(ball.ycor() > 230):
+        ball.dy *= -1
+    
+    # Colisão com a parede direita
+    if(ball.xcor() > 350):
+        ball.dx *= -1
+    # Colisão com a parede esquerda
+    elif(ball.xcor() < -350):
+        ball.dx *= -1
