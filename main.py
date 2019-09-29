@@ -27,8 +27,8 @@ racket.color("blue")
 racket.penup()
 racket.sety(-220)
 
-# Movimentando a raquete
 
+# Movimentando a raquete esquerda
 # Esquerda
 def racket_left():
     x = racket.xcor()
@@ -38,8 +38,8 @@ def racket_left():
         x = -290
     racket.setx(x)
 
-# Direita
 
+# Direita
 def racket_right():
     x = racket.xcor()
     if x < 290:
@@ -47,6 +47,7 @@ def racket_right():
     else:
         x = 290
     racket.setx(x)
+
 
 screen.listen()
 screen.onkeypress(racket_left, 'a')
@@ -78,17 +79,16 @@ while True:
     # Colisão com a parede superior
     if(ball.ycor() > 230):
         ball.dy *= -1
-    
+
     # Colisão com a parede direita
     if(ball.xcor() > 350):
         ball.dx *= -1
-    
+
     # Colisão com a parede esquerda
     elif(ball.xcor() < -350):
         ball.dx *= -1
 
     # Colisão com a raquete
-
-    if(ball.ycor() < -200 and ball.xcor() < racket.xcor() + 70 and 
+    if(ball.ycor() < -200 and ball.xcor() < racket.xcor() + 70 and
             ball.xcor() > racket.xcor() - 70):
         ball.dy *= -1
