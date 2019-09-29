@@ -27,7 +27,6 @@ racket.color("blue")
 racket.penup()
 racket.sety(-220)
 
-
 # Movimentando a raquete esquerda
 # Esquerda
 def racket_left():
@@ -38,7 +37,6 @@ def racket_left():
         x = -290
     racket.setx(x)
 
-
 # Direita
 def racket_right():
     x = racket.xcor()
@@ -47,7 +45,6 @@ def racket_right():
     else:
         x = 290
     racket.setx(x)
-
 
 screen.listen()
 screen.onkeypress(racket_left, 'a')
@@ -69,7 +66,28 @@ for i in block_colors:
     y -= 30
     x = -300
 
-while True:
+# função que testa se a bola passou da raquete
+def ball_pass():
+    global ball
+    global racket
+    if(ball.ycor() < racket.ycor()):
+        return True
+    return False
+
+# isso é só pra tentar deixar a criação de hud numa função só, se acharem merda podem apagar
+def create_hud(shape,color):
+    hud = turtle.Turtle()
+    hud.speed(0)
+    hud.shape(shape)
+    hud.color(color)
+    hud.penup()
+    return hud
+
+# acho que o nome da variável fala por si só né 
+hasLives = True
+lives = 3
+
+while hasLives:
     screen.update()
 
     # movimentando a bola
@@ -92,3 +110,10 @@ while True:
     if(ball.ycor() < -200 and ball.xcor() < racket.xcor() + 70 and
             ball.xcor() > racket.xcor() - 70):
         ball.dy *= -1
+
+    # testanto se a bola passa da cory da raquete
+    if(ball_pass()):
+        lives -= 1
+        if(lives < 1):
+            hasLives = False
+        ball.goto(0,0)
