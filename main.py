@@ -3,6 +3,16 @@ import sys
 import turtle
 import time
 
+# isso é só pra tentar deixar a criação de hud numa função só,
+# se acharem merda podem apagar, mas já implementei na criação das parada tudo só lamento
+def create_hud(shape,color):
+    hud = turtle.Turtle()
+    hud.speed(0)
+    hud.shape(shape)
+    hud.color(color)
+    hud.penup()
+    return hud
+
 # Criando a tela.
 screen = turtle.Screen()
 screen.title(" Little Breakout ")
@@ -11,20 +21,14 @@ screen.setup(720, 480)
 screen.tracer(0)
 
 # Desenhando a bola.
-ball = turtle.Turtle("circle")
-ball.speed(0)
-ball.color("white")
-ball.penup()
+ball = create_hud("circle","white")
 ball.goto(0, 0)
 ball.dx = random.choice((-1, 1)) * 1
 ball.dy = random.choice((-1, 1)) * 1.7
 
 # Desenhando raquete.
-racket = turtle.Turtle("square")
-racket.speed(0)
+racket = create_hud("square","blue")
 racket.turtlesize(1, 7)
-racket.color("blue")
-racket.penup()
 racket.sety(-220)
 
 # Movimentando a raquete esquerda
@@ -56,24 +60,12 @@ y = 220
 block_colors = ["red", "orange", "yellow", "green", "blue"]
 for i in block_colors:
     while x <= 320:
-        block = turtle.Turtle("square")
-        block.speed(0)
-        block.color(i)
+        block = create_hud("square",i) 
         block.turtlesize(1, 4)
-        block.penup()
         block.goto(x, y)
         x += 85
     y -= 30
     x = -300
-
-# isso é só pra tentar deixar a criação de hud numa função só, se acharem merda podem apagar
-def create_hud(shape,color):
-    hud = turtle.Turtle()
-    hud.speed(0)
-    hud.shape(shape)
-    hud.color(color)
-    hud.penup()
-    return hud
 
 # função que testa se a bola passou da raquete
 def ball_pass():
@@ -90,9 +82,9 @@ lives = 0
 # criando uma lista de hud das vidinhas, botei uma tortuguinha pq é mt fofinho
 lives_hud = []
 for i in range(0,3):
-    hud = create_hud("turtle","red")
-    hud.goto(-340+(30*i),-210) # isso se chama gambiarra, e sim vou mudar a posição das vidas pra cima, mas só quando arrumarem a parte superior da tela e tal
-    lives_hud.append(hud)
+    live_hud = create_hud("turtle","red")
+    live_hud.goto(-340+(30*i),-210) # isso se chama gambiarra, e sim vou mudar a posição das vidas pra cima, mas só quando arrumarem a parte superior da tela e tal
+    lives_hud.append(live_hud)
 
 while hasLives:
     screen.update()
