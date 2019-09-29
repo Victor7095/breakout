@@ -23,18 +23,11 @@ screen.tracer(0)
 # pontuação
 score = 0
 
-# vidas
-life = "3 tartaruginha S2"
-
-# display de pontuação e vida
-scoreboard = turtle.Turtle("square")
-scoreboard.speed(0)
-scoreboard.color("white")
-scoreboard.penup()
+# display de pontuação 
+scoreboard = create_hud("square","white")
 scoreboard.hideturtle()
-scoreboard.goto(0, 200)
-scoreboard.write("Score : {}            Life : {}".format(score, life),
-                 align="center", font=("Press Start 2P", 12, "normal"))
+scoreboard.goto(280, 200)
+scoreboard.write("Score : {}".format(score),align="center", font=("Press Start 2P", 18, "normal"))
 
 # Desenhando a bola.
 ball = create_hud("circle","white")
@@ -111,7 +104,7 @@ lives = 0
 lives_hud = []
 for i in range(0,3):
     live_hud = create_hud("turtle","red")
-    live_hud.goto(-340+(30*i),-210) # isso se chama gambiarra, e sim vou mudar a posição das vidas pra cima, mas só quando arrumarem a parte superior da tela e tal
+    live_hud.goto(-340+(30*i),215) # isso se chama gambiarra, e sim vou mudar a posição das vidas pra cima, mas só quando arrumarem a parte superior da tela e tal
     lives_hud.append(live_hud)
 
 while hasLives:
