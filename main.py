@@ -210,4 +210,4 @@ while hasLives:
         ball.goto(0, 0)
         racket.setx(0)
         if (lives > 0):
-            wait()
+            i = 0
