@@ -2,10 +2,12 @@ import random
 import sys
 import turtle
 import time
+import os
 
 
 # isso é só pra tentar deixar a criação de hud numa função só,
-# se acharem merda podem apagar, mas já implementei na criação das parada tudo só lamento
+# se acharem merda podem apagar;
+# Mas já implementei na criação das parada tudo só lamento
 def create_hud(shape, color):
     hud = turtle.Turtle()
     hud.speed(0)
@@ -81,17 +83,21 @@ def angle():
         return signal*(1+(racket_angle/10))
 
 # tempo entre as derrotas
+
+
 def wait():
     ball.goto(0, 0)
     timer = create_hud("square", "white")
     timer.hideturtle()
     i = 3
     while i > 0:
-        timer.write("{}".format(i),align="center", font=("Press Start 2P", 40, "normal"))
+        timer.write("{}".format(i), align="center",
+                    font=("Press Start 2P", 40, "normal"))
         timer.clear()
         time.sleep(1)
         i -= 1
     timer.goto(0, 4)
+
 
 # controles
 screen.listen()
@@ -147,7 +153,8 @@ def ball_pass():
     return False
 
 
-# aqui to setando a quantidade de vidas e criando a variavel que é testada no laço principal do jogo
+# aqui to setando a quantidade de vidas
+# e criando a variavel que é testada no laço principal do jogo
 hasLives = True
 lives = 3
 
@@ -155,7 +162,8 @@ lives = 3
 lives_hud = []
 for i in range(0, 3):
     live_hud = create_hud("turtle", "red")
-    # isso se chama gambiarra, e sim vou mudar a posição das vidas pra cima, mas só quando arrumarem a parte superior da tela e tal
+    # isso se chama gambiarra, e sim vou mudar a posição das vidas pra cima;
+    # Mas só quando arrumarem a parte superior da tela e tal
     live_hud.goto(-330+(30*i), 215)
     lives_hud.append(live_hud)
 i = 0
@@ -176,7 +184,7 @@ while hasLives:
         ball.dy *= -1
 
     # Colisão com a parede direita
-    if(ball.xcor() > 350):
+    if (ball.xcor() > 350):
         ball.dx *= -1
 
     # Colisão com a parede esquerda
@@ -184,19 +192,22 @@ while hasLives:
         ball.dx *= -1
 
     # Colisão com a raquete
-    if(ball.ycor() < -200 and ball.ycor() > -205 and ball.xcor() < racket.xcor() + 74 and
+    if (ball.ycor() < -200 and ball.ycor() > -205 and
+        ball.xcor() < racket.xcor() + 74 and
             ball.xcor() > racket.xcor() - 74):
         ball.dy *= -1
         ball.dx = angle()
 
     # colisão do canto esquerdo da raquete
-    if (ball.ycor() <= -200 and ball.ycor() > -230 and ball.xcor() <= racket.xcor() - 74 and
+    if (ball.ycor() <= -200 and ball.ycor() > -230 and
+        ball.xcor() <= racket.xcor() - 74 and
             ball.xcor() > racket.xcor() - 76):
         ball.dy *= -1
         ball.dx *= -1
-    
+
     # colisão do canto direito da raquete
-    if (ball.ycor() <= -200 and ball.ycor() > -230 and ball.xcor() < racket.xcor() + 77 and
+    if (ball.ycor() <= -200 and ball.ycor() > -230 and
+        ball.xcor() < racket.xcor() + 77 and
             ball.xcor() >= racket.xcor() + 74):
         ball.dy *= -1
         ball.dx *= -1
