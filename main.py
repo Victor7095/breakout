@@ -158,9 +158,14 @@ for i in range(0, 3):
     # isso se chama gambiarra, e sim vou mudar a posição das vidas pra cima, mas só quando arrumarem a parte superior da tela e tal
     live_hud.goto(-330+(30*i), 215)
     lives_hud.append(live_hud)
-
+i = 0
 while hasLives:
+
     screen.update()
+
+    if (i == 0):
+        wait()
+        i = 1
 
     # movimentando a bola
     ball.sety(ball.ycor() + ball.dy)
