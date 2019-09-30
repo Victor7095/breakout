@@ -40,6 +40,9 @@ racket = create_hud("square","blue")
 racket.turtlesize(1, 7)
 racket.sety(-220)
 
+
+blocks = [[0]*8]*5
+
 # Movimentando a raquete esquerda
 # Esquerda
 def racket_left():
@@ -79,11 +82,12 @@ screen.onkeypress(racket_right, 'Right')
 x = -300
 y = 180
 block_colors = ["red", "orange", "yellow", "green", "blue"]
-for i in block_colors:
-    while x <= 320:
-        block = create_hud("square",i) 
+for i in range(len(block_colors)):
+    for j in range(8):
+        block = create_hud("square", block_colors[i])
         block.turtlesize(1, 4)
         block.goto(x, y)
+        blocks[i][j] = block
         x += 85
     y -= 30
     x = -300
