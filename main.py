@@ -190,12 +190,14 @@ while hasLives:
         ball.dx = angle()
 
     # colisão do canto esquerdo da raquete
-    if (ball.ycor() < -205 and ball.ycor() > -220 and ball.xcor() < racket.xcor() - 73 and ball.xcor() > racket.xcor() - 77):
+    if (ball.ycor() <= -200 and ball.ycor() > -230 and ball.xcor() <= racket.xcor() - 74 and
+            ball.xcor() > racket.xcor() - 76):
         ball.dy *= -1
         ball.dx *= -1
     
     # colisão do canto direito da raquete
-    if (ball.ycor() < -205 and ball.ycor() > -220 and ball.xcor() < racket.xcor() + 77 and ball.xcor() > racket.xcor() + 73):
+    if (ball.ycor() <= -200 and ball.ycor() > -230 and ball.xcor() < racket.xcor() + 77 and
+            ball.xcor() >= racket.xcor() + 74):
         ball.dy *= -1
         ball.dx *= -1
 
