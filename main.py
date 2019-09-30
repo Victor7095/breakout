@@ -3,15 +3,17 @@ import sys
 import turtle
 import time
 
+
 # isso é só pra tentar deixar a criação de hud numa função só,
 # se acharem merda podem apagar, mas já implementei na criação das parada tudo só lamento
-def create_hud(shape,color):
+def create_hud(shape, color):
     hud = turtle.Turtle()
     hud.speed(0)
     hud.shape(shape)
     hud.color(color)
     hud.penup()
     return hud
+
 
 # Criando a tela.
 screen = turtle.Screen()
@@ -23,25 +25,27 @@ screen.tracer(0)
 # pontuação
 score = 0
 
-# display de pontuação 
-scoreboard = create_hud("square","white")
+# display de pontuação
+scoreboard = create_hud("square", "white")
 scoreboard.hideturtle()
 scoreboard.goto(280, 200)
-scoreboard.write("Score : {}".format(score),align="center", font=("Press Start 2P", 18, "normal"))
+scoreboard.write("Score : {}".format(score), align="center",
+                 font=("Press Start 2P", 18, "normal"))
 
 # Desenhando a bola.
-ball = create_hud("circle","white")
+ball = create_hud("circle", "white")
 ball.goto(0, 0)
 ball.dx = random.choice((-1, 1)) * 1
 ball.dy = random.choice((-1, 1)) * 1.7
 
 # Desenhando raquete.
-racket = create_hud("square","blue")
+racket = create_hud("square", "blue")
 racket.turtlesize(1, 7)
 racket.sety(-220)
 
 
 blocks = [[0]*8]*5
+
 
 # Movimentando a raquete esquerda
 # Esquerda
@@ -53,6 +57,7 @@ def racket_left():
         x = -285
     racket.setx(x)
 
+
 # Direita
 def racket_right():
     x = racket.xcor()
@@ -62,6 +67,7 @@ def racket_right():
         x = 280
     racket.setx(x)
 
+
 # angulação da bola ao rebater na raquete
 def angle():
     x1 = racket.xcor()
@@ -69,14 +75,40 @@ def angle():
     signal = 1 if ball.dx >= 0 else -1
     dist_of_points = ((x2-x1)**2)**(0.5)
     racket_angle = (dist_of_points//17.5)+1
-    if(dist_of_points >=0 and dist_of_points < 1):
+    if(dist_of_points >= 0 and dist_of_points < 1):
         return 0
     else:
         return signal*(1+(racket_angle/10))
 
+
 screen.listen()
 screen.onkeypress(racket_left, 'Left')
 screen.onkeypress(racket_right, 'Right')
+
+
+# diz se houve colisão entre dois objetos
+def colide(a, b):
+    xA, yA, xB, yB = [a.xcor(), a.ycor(), b.xcor(), b.ycor()]
+    widthA = a.turtlesize()[1] * 10
+    widthB = b.turtlesize()[1] * 10
+    heightA = a.turtlesize()[0] * 10
+    heightB = b.turtlesize()[0] * 10
+
+    if (a.dx > 0):
+        if (xA + widthA/2 >= xB and xA <= xB and
+            ((yA + heightA/2 >= yB and yA <= yB) or
+             (yA + heightA/2 >= yB + heightB/2 and yA <= yB + heightB/2))):
+            return True
+
+    """
+    if (a.dx < 0):
+        if (xA <= xB + heightA/2 and xA + widthA/2 >= xB + heightA/2 and
+            ((yA + heightA/2 >= yB and yA <= yB) or
+             (yA + heightA/2 >= yB + heightB/2 and yA <= yB + heightB/2))):
+            return True
+    """
+    return True
+
 
 # desenhando os blocos
 x = -300
@@ -92,6 +124,7 @@ for i in range(len(block_colors)):
     y -= 30
     x = -300
 
+
 # função que testa se a bola passou da raquete
 def ball_pass():
     global ball
@@ -100,15 +133,17 @@ def ball_pass():
         return True
     return False
 
+
 # aqui to setando a quantidade de vidas e criando a variavel que é testada no laço principal do jogo
 hasLives = True
 lives = 3
 
 # criando uma lista de hud das vidinhas, botei uma tortuguinha pq é mt fofinho
 lives_hud = []
-for i in range(0,3):
-    live_hud = create_hud("turtle","red")
-    live_hud.goto(-330+(30*i),215) # isso se chama gambiarra, e sim vou mudar a posição das vidas pra cima, mas só quando arrumarem a parte superior da tela e tal
+for i in range(0, 3):
+    live_hud = create_hud("turtle", "red")
+    # isso se chama gambiarra, e sim vou mudar a posição das vidas pra cima, mas só quando arrumarem a parte superior da tela e tal
+    live_hud.goto(-330+(30*i), 215)
     lives_hud.append(live_hud)
 
 while hasLives:
@@ -142,4 +177,4 @@ while hasLives:
         lives_hud[lives].hideturtle()
         if(lives == 0):
             hasLives = False
-        ball.goto(0,0)
+        ball.goto(0, 0)
