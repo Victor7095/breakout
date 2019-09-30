@@ -179,8 +179,8 @@ while hasLives:
         ball.dx *= -1
 
     # Colisão com a raquete
-    if(ball.ycor() < -200 and ball.ycor() > -205 and ball.xcor() < racket.xcor() + 73 and
-            ball.xcor() > racket.xcor() - 73):
+    if(ball.ycor() < -200 and ball.ycor() > -205 and ball.xcor() < racket.xcor() + 74 and
+            ball.xcor() > racket.xcor() - 74):
         ball.dy *= -1
         ball.dx = angle()
 
