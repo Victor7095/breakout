@@ -36,7 +36,7 @@ scoreboard.write("Score : {}".format(score), align="center",
 ball = create_hud("circle", "white")
 ball.goto(0, 0)
 ball.dx = random.choice((-1, 1)) * 1
-ball.dy = random.choice((-1, 1)) * 1.7
+ball.dy = -1.7
 
 # Desenhando raquete.
 racket = create_hud("square", "blue")
@@ -80,7 +80,20 @@ def angle():
     else:
         return signal*(1+(racket_angle/10))
 
+# tempo entre as derrotas
+def wait():
+    ball.goto(0, 0)
+    timer = create_hud("square", "white")
+    timer.hideturtle()
+    i = 3
+    while i > 0:
+        timer.write("{}".format(i),align="center", font=("Press Start 2P", 40, "normal"))
+        timer.clear()
+        time.sleep(1)
+        i -= 1
+    timer.goto(0, 4)
 
+# controles
 screen.listen()
 screen.onkeypress(racket_left, 'Left')
 screen.onkeypress(racket_right, 'Right')
@@ -129,7 +142,7 @@ for i in range(len(block_colors)):
 def ball_pass():
     global ball
     global racket
-    if(ball.ycor() < racket.ycor()):
+    if(ball.ycor() < racket.ycor() - 20):
         return True
     return False
 
@@ -166,10 +179,20 @@ while hasLives:
         ball.dx *= -1
 
     # Colisão com a raquete
-    if(ball.ycor() < -200 and ball.ycor() > -205 and ball.xcor() < racket.xcor() + 70 and
-            ball.xcor() > racket.xcor() - 70):
+    if(ball.ycor() < -200 and ball.ycor() > -205 and ball.xcor() < racket.xcor() + 73 and
+            ball.xcor() > racket.xcor() - 73):
         ball.dy *= -1
         ball.dx = angle()
+
+    # colisão do canto esquerdo da raquete
+    if (ball.ycor() < -205 and ball.ycor() > -220 and ball.xcor() < racket.xcor() - 73 and ball.xcor() > racket.xcor() - 77):
+        ball.dy *= -1
+        ball.dx *= -1
+    
+    # colisão do canto direito da raquete
+    if (ball.ycor() < -205 and ball.ycor() > -220 and ball.xcor() < racket.xcor() + 77 and ball.xcor() > racket.xcor() + 73):
+        ball.dy *= -1
+        ball.dx *= -1
 
     # testanto se a bola passa da cory da raquete
     if(ball_pass()):
@@ -178,3 +201,6 @@ while hasLives:
         if(lives == 0):
             hasLives = False
         ball.goto(0, 0)
+        racket.setx(0)
+        if (lives > 0):
+            wait()
