@@ -2,15 +2,12 @@ import random
 import sys
 import turtle
 import time
-import simpleaudio as sa
-
+import os
 # função para tocar som
 
 
 def play(sound):
-    filename = sound
-    wave_obj = sa.WaveObject.from_wave_file(filename)
-    play_obj = wave_obj.play()
+    os.system('aplay '+sound+'&')
 
 
 beep = 'beep.wav'
@@ -18,11 +15,10 @@ peep = 'peep.wav'
 plop = 'plop.wav'
 game_over = 'game_over.wav'
 
+
 # isso é só pra tentar deixar a criação de hud numa função só,
 # se acharem merda podem apagar;
 # Mas já implementei na criação das parada tudo só lamento
-
-
 def create_hud(shape, color):
     hud = turtle.Turtle()
     hud.speed(0)
@@ -41,8 +37,6 @@ screen.tracer(0)
 
 # pontuação
 score = 0
-
-# display de pontuação
 scoreboard = create_hud("square", "white")
 scoreboard.hideturtle()
 scoreboard.goto(280, 200)
@@ -61,7 +55,7 @@ racket.turtlesize(1, 7)
 racket.sety(-220)
 
 
-blocks = [[0]*8]*5
+blocks = []
 
 
 # Movimentando a raquete esquerda
@@ -123,24 +117,32 @@ screen.onkeypress(racket_right, 'Right')
 # diz se houve colisão entre dois objetos
 def colide(a, b):
     xA, yA, xB, yB = [a.xcor(), a.ycor(), b.xcor(), b.ycor()]
-    widthA = a.turtlesize()[1] * 10
-    widthB = b.turtlesize()[1] * 10
-    heightA = a.turtlesize()[0] * 10
-    heightB = b.turtlesize()[0] * 10
+    widthA = a.turtlesize()[1] * 20
+    widthB = b.turtlesize()[1] * 20
+    heightA = a.turtlesize()[0] * 20
+    heightB = b.turtlesize()[0] * 20
+    xA -= widthA/2
+    yA += heightA/2
+    xB -= widthB/2
+    yB += heightB/2
 
     if (a.dx > 0):
-        if (xA + widthA/2 >= xB and xA <= xB and
-            ((yA + heightA/2 >= yB and yA <= yB) or
-             (yA + heightA/2 >= yB + heightB/2 and yA <= yB + heightB/2))):
+        if (xA + widthA >= xB and xA <= xB and
+            ((yA + heightA >= yB and yA <= yB) or
+             (yA + heightA >= yB + heightB and yA <= yB + heightB))):
+            print(int(xA), int(xB), int(widthA), int(widthB),
+                  int(yA), int(yB), int(heightA), int(heightB))
             return True
 
-    if (a.dx < 0):
-        if (xA <= xB + heightA/2 and xA + widthA/2 >= xB + heightA/2 and
-            ((yA + heightA/2 >= yB and yA <= yB) or
-             (yA + heightA/2 >= yB + heightB/2 and yA <= yB + heightB/2))):
+    elif (a.dx < 0):
+        if (xA <= xB + widthB and xA + widthA >= xB + widthB and
+            ((yA + heightA >= yB and yA <= yB) or
+             (yA + heightA >= yB + heightB and yA <= yB + heightB))):
             return True
-
-    return True
+    if(xA + widthA >= xB and xA <= xB + widthB and
+       yA + heightA >= yB and yA <= yB + heightB):
+        return True
+    return False
 
 
 # desenhando os blocos
@@ -148,21 +150,18 @@ x = -300
 y = 180
 block_colors = ["red", "orange", "yellow", "green", "blue"]
 for i in range(len(block_colors)):
+    line_of_blocks = []
     for j in range(8):
         block = create_hud("square", block_colors[i])
         block.turtlesize(1, 4)
         block.goto(x, y)
-        blocks[i][j] = block
+        block.color = block_colors[i]
+        block.destroyed = False
+        line_of_blocks.append(block)
         x += 85
     y -= 30
+    blocks.append(line_of_blocks)
     x = -300
-
-# criando uma lista com as posições dos blocos
-pos_blocks = []
-for i in range(len(blocks)):
-    for j in range(len(blocks[i])):
-        aux = [blocks[i][j].xcor(), blocks[i][j].ycor()]
-        pos_blocks.append(aux)
 
 
 # função que testa se a bola passou da raquete
@@ -187,6 +186,7 @@ for i in range(0, 3):
     # Mas só quando arrumarem a parte superior da tela e tal
     live_hud.goto(-330+(30*i), 215)
     lives_hud.append(live_hud)
+
 i = 0
 while hasLives:
 
@@ -239,11 +239,13 @@ while hasLives:
         ball.dx *= -1
         play(beep)
 
-    # colisão com os blocos, ainda não funcionando...
-    # for i in range(len(pos_blocks)):
-        # for j in range(len(pos_blocks[i])):
-        # if (ball.xcor() == pos_blocks[i][j] and ball.ycor() == [i][j]):
-        #    ball.dy *= -1
+    if ball.ycor() > 0:
+        for line in blocks:
+            for block in line:
+                if not block.destroyed and colide(ball, block):
+                    block.destroyed = True
+                    block.hideturtle()
+                    ball.dy *= -1
 
     # testanto se a bola passa da cory da raquete
     if (ball_pass()):
@@ -257,8 +259,7 @@ while hasLives:
             play(game_over)
             message.write("Game Over", align="center",
                           font=("Press Start 2P", 40, "normal"))
-            message.clear()
-            time.sleep(15)
+            time.sleep(3)
         ball.goto(0, 0)
         racket.setx(0)
         if (lives > 0):
