@@ -10,3 +10,8 @@ laterais e superiores da tela. Quando um tijolo é atingido, a bola rebate de vo
 - Murilo Acácio : https://github.com/Murillo-Acacio
 - Paulo André : https://github.com/Pauloacf
 - Victor Yan Pereira e Lima : https://github.com/Victor7095
+
+## Content
+Sounds: https://opengameart.org/content/3-ping-pong-sounds-8-bit-style
+Songs: https://opengameart.org/content/8-bit-music-pack-loopable
+

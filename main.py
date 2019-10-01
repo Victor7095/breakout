@@ -217,7 +217,6 @@ while hasLives:
             ball.xcor() >= racket.xcor() + 74):
         ball.dy *= -1
         ball.dx *= -1
-        os.system("")
 
     # colisão com os blocos, ainda não funcionando...
     # for i in range(len(pos_blocks)):
