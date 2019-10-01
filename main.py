@@ -2,12 +2,26 @@ import random
 import sys
 import turtle
 import time
-import os
+import simpleaudio as sa
 
+# função para tocar som
+
+
+def play(sound):
+    filename = sound
+    wave_obj = sa.WaveObject.from_wave_file(filename)
+    play_obj = wave_obj.play()
+
+
+beep = 'beep.wav'
+peep = 'peep.wav'
+plop = 'plop.wav'
 
 # isso é só pra tentar deixar a criação de hud numa função só,
 # se acharem merda podem apagar;
 # Mas já implementei na criação das parada tudo só lamento
+
+
 def create_hud(shape, color):
     hud = turtle.Turtle()
     hud.speed(0)
@@ -186,16 +200,19 @@ while hasLives:
     ball.setx(ball.xcor() + ball.dx)
 
     # Colisão com a parede superior
-    if(ball.ycor() > 230):
+    if (ball.ycor() > 230):
         ball.dy *= -1
+        play(plop)
 
     # Colisão com a parede direita
     if (ball.xcor() > 350):
         ball.dx *= -1
+        play(plop)
 
     # Colisão com a parede esquerda
     elif(ball.xcor() < -350):
         ball.dx *= -1
+        play(plop)
 
     # Colisão com a raquete
     if (ball.ycor() < -200 and ball.ycor() > -205 and
@@ -203,6 +220,7 @@ while hasLives:
             ball.xcor() > racket.xcor() - 74):
         ball.dy *= -1
         ball.dx = angle()
+        play(beep)
 
     # colisão do canto esquerdo da raquete
     if (ball.ycor() <= -200 and ball.ycor() > -230 and
@@ -210,6 +228,7 @@ while hasLives:
             ball.xcor() > racket.xcor() - 76):
         ball.dy *= -1
         ball.dx *= -1
+        play(beep)
 
     # colisão do canto direito da raquete
     if (ball.ycor() <= -200 and ball.ycor() > -230 and
@@ -217,6 +236,7 @@ while hasLives:
             ball.xcor() >= racket.xcor() + 74):
         ball.dy *= -1
         ball.dx *= -1
+        play(beep)
 
     # colisão com os blocos, ainda não funcionando...
     # for i in range(len(pos_blocks)):
@@ -228,6 +248,7 @@ while hasLives:
     if (ball_pass()):
         lives -= 1
         lives_hud[lives].hideturtle()
+        play(peep)
         if(lives == 0):
             hasLives = False
         ball.goto(0, 0)
