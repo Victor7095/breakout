@@ -43,6 +43,14 @@ scoreboard.goto(280, 200)
 scoreboard.write("Score : {}".format(score), align="center",
                  font=("Press Start 2P", 18, "normal"))
 
+
+# display de pontuação
+def update_score_display():
+    scoreboard.clear()
+    scoreboard.write("Score : {}".format(score), align="center",
+                     font=("Press Start 2P", 18, "normal"))
+
+
 # Desenhando a bola.
 ball = create_hud("circle", "white")
 ball.goto(0, 0)
@@ -245,6 +253,8 @@ while hasLives:
                 if not block.destroyed and colide(ball, block):
                     block.destroyed = True
                     block.hideturtle()
+                    score += 1
+                    update_score_display()
                     ball.dy *= -1
 
     # testanto se a bola passa da cory da raquete
