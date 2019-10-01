@@ -235,4 +235,3 @@ while hasLives:
         racket.setx(0)
         if (lives > 0):
             i = 0
-print(pos_blocks)
