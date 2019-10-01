@@ -119,13 +119,12 @@ def colide(a, b):
              (yA + heightA/2 >= yB + heightB/2 and yA <= yB + heightB/2))):
             return True
 
-    """
     if (a.dx < 0):
         if (xA <= xB + heightA/2 and xA + widthA/2 >= xB + heightA/2 and
             ((yA + heightA/2 >= yB and yA <= yB) or
              (yA + heightA/2 >= yB + heightB/2 and yA <= yB + heightB/2))):
             return True
-    """
+
     return True
 
 
@@ -143,12 +142,19 @@ for i in range(len(block_colors)):
     y -= 30
     x = -300
 
+# criando uma lista com as posições dos blocos
+pos_blocks = []
+for i in range(len(blocks)):
+    for j in range(len(blocks[i])):
+        aux = [blocks[i][j].xcor(), blocks[i][j].ycor()]
+        pos_blocks.append(aux)
+
 
 # função que testa se a bola passou da raquete
 def ball_pass():
     global ball
     global racket
-    if(ball.ycor() < racket.ycor() - 20):
+    if (ball.ycor() < racket.ycor() - 20):
         return True
     return False
 
@@ -211,9 +217,16 @@ while hasLives:
             ball.xcor() >= racket.xcor() + 74):
         ball.dy *= -1
         ball.dx *= -1
+        os.system("")
+
+    # colisão com os blocos, ainda não funcionando...
+    # for i in range(len(pos_blocks)):
+        # for j in range(len(pos_blocks[i])):
+        # if (ball.xcor() == pos_blocks[i][j] and ball.ycor() == [i][j]):
+        #    ball.dy *= -1
 
     # testanto se a bola passa da cory da raquete
-    if(ball_pass()):
+    if (ball_pass()):
         lives -= 1
         lives_hud[lives].hideturtle()
         if(lives == 0):
@@ -222,3 +235,4 @@ while hasLives:
         racket.setx(0)
         if (lives > 0):
             i = 0
+print(pos_blocks)
