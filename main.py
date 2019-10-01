@@ -16,6 +16,7 @@ def play(sound):
 beep = 'beep.wav'
 peep = 'peep.wav'
 plop = 'plop.wav'
+game_over = 'game_over.wav'
 
 # isso é só pra tentar deixar a criação de hud numa função só,
 # se acharem merda podem apagar;
@@ -249,8 +250,15 @@ while hasLives:
         lives -= 1
         lives_hud[lives].hideturtle()
         play(peep)
-        if(lives == 0):
+        if (lives == 0):
             hasLives = False
+            message = create_hud("square", "white")
+            message.hideturtle()
+            play(game_over)
+            message.write("Game Over", align="center",
+                          font=("Press Start 2P", 40, "normal"))
+            message.clear()
+            time.sleep(15)
         ball.goto(0, 0)
         racket.setx(0)
         if (lives > 0):
