@@ -15,5 +15,6 @@ laterais e superiores da tela. Quando um tijolo é atingido, a bola rebate de vo
 Sounds: https://opengameart.org/content/3-ping-pong-sounds-8-bit-style
 Songs: 
 https://opengameart.org/content/8-bit-music-pack-loopable
+https://www.newgrounds.com/audio/listen/253096
 https://www.youtube.com/watch?v=br3OzOrARh4
 

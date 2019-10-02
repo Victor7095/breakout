@@ -18,6 +18,7 @@ beep = 'beep.wav'
 peep = 'peep.wav'
 plop = 'plop.wav'
 game_over = 'game_over.wav'
+victory = 'victory.wav'
 
 
 # Alterar variáavel que mantém o estado do jogo
@@ -50,14 +51,14 @@ def create_hud(shape, color):
 screen = turtle.Screen()
 screen.title(" Little Breakout ")
 screen.bgcolor("black")
-screen.setup(720, 580) # 720,480 antigo
+screen.setup(720, 580)  # 720,480 antigo
 screen.tracer(0)
 
 # pontuação
 score = 0
 scoreboard = create_hud("square", "white")
 scoreboard.hideturtle()
-scoreboard.goto(280, 250) # 280,200 antigo
+scoreboard.goto(280, 250)  # 280,200 antigo
 scoreboard.write("Score : {}".format(score), align="center",
                  font=("Press Start 2P", 18, "normal"))
 
@@ -133,7 +134,6 @@ def wait():
         time.sleep(1)
         i -= 1
     set_state("playing")
-    
 
 
 # Pausar o jogo
@@ -188,7 +188,7 @@ def colide(a, b):
 
 # desenhando os blocos
 x = -300
-y = 230 # antigo 180
+y = 230  # antigo 180
 block_colors = ["red", "orange", "yellow", "green", "blue"]
 for i in range(len(block_colors)):
     line_of_blocks = []
@@ -250,7 +250,7 @@ while hasLives:
             play(plop)
 
         # Colisão com a raquete
-        if (ball.ycor() < -250 and ball.ycor() > -255 and # antigo -200, -205
+        if (ball.ycor() < -250 and ball.ycor() > -255 and  # antigo -200, -205
             ball.xcor() < racket.xcor() + 74 and
                 ball.xcor() > racket.xcor() - 74):
             ball.dy *= -1
@@ -258,7 +258,7 @@ while hasLives:
             play(beep)
 
         # colisão do canto esquerdo da raquete
-        if (ball.ycor() <= -250 and ball.ycor() > -280 and # antigo -200, -230
+        if (ball.ycor() <= -250 and ball.ycor() > -280 and  # antigo -200, -230
             ball.xcor() <= racket.xcor() - 74 and
                 ball.xcor() > racket.xcor() - 76):
             ball.dy *= -1
@@ -266,7 +266,7 @@ while hasLives:
             play(beep)
 
         # colisão do canto direito da raquete
-        if (ball.ycor() <= -250 and ball.ycor() > -280 and # antigo -200, -230
+        if (ball.ycor() <= -250 and ball.ycor() > -280 and  # antigo -200, -230
             ball.xcor() < racket.xcor() + 77 and
                 ball.xcor() >= racket.xcor() + 74):
             ball.dy *= -1
@@ -283,19 +283,22 @@ while hasLives:
                         score += (5-i)
                         update_score_display()
                         ball.dy *= -1
+                        play(plop)
 
                         # Se todos os tijolos estiverem destruídos
                         if all([all(line) for line in destroyed_blocks]):
                             message = create_hud("square", "white")
                             message.hideturtle()
-                            play(game_over)
-                            message.write("Game Win", align="center",
+                            play(victory)
+                            message.write("Victory", align="center",
                                           font=(
                                               "Press Start 2P",
                                               40,
                                               "normal")
                                           )
-                            time.sleep(3)
+                            time.sleep(5)
+                            message.clear()
+                            hasLives = False
 
         # testando se a bola passa da cory da raquete
         if (ball_pass()):
@@ -310,7 +313,8 @@ while hasLives:
                 play(game_over)
                 message.write("Game Over", align="center",
                               font=("Press Start 2P", 40, "normal"))
-                time.sleep(3)
+                time.sleep(13)
+                message.clear()
             ball.goto(0, 50)
             racket.setx(0)
             if (lives > 0):
