@@ -235,7 +235,7 @@ while hasLives:
         ball.setx(ball.xcor() + ball.dx)
 
         # Colisão com a parede superior
-        if (ball.ycor() > 315):
+        if (ball.ycor() > 290):
             ball.dy *= -1
             play(plop)
 
@@ -280,7 +280,7 @@ while hasLives:
                     if not destroyed_blocks[i][j] and colide(ball, block):
                         destroyed_blocks[i][j] = True
                         block.hideturtle()
-                        score += 1
+                        score += (5-i)
                         update_score_display()
                         ball.dy *= -1
 
