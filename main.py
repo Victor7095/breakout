@@ -187,7 +187,7 @@ def colide(a, b):
 
 
 # desenhando os blocos
-x = -300
+x = -310
 y = 230  # antigo 180
 block_colors = ["red", "orange", "yellow", "green", "blue"]
 for i in range(len(block_colors)):
@@ -200,10 +200,10 @@ for i in range(len(block_colors)):
         block.goto(x, y)
         block.color = block_colors[i]
         line_of_blocks.append(block)
-        x += 85
+        x += 88
     y -= 30
     blocks.append(line_of_blocks)
-    x = -300
+    x = -310
 
 
 # função que testa se a bola passou da raquete
@@ -251,7 +251,7 @@ while hasLives:
             play(plop)
 
         # Colisão com a raquete
-        if (ball.ycor() < -250 and ball.ycor() > -255 and  # antigo -200, -205
+        if (ball.ycor() < -240 and ball.ycor() > -245 and  # antigo -200, -205
             ball.xcor() < racket.xcor() + 74 and
                 ball.xcor() > racket.xcor() - 74):
             ball.dy *= -1
@@ -259,19 +259,21 @@ while hasLives:
             play(beep)
 
         # colisão do canto esquerdo da raquete
-        if (ball.ycor() <= -250 and ball.ycor() > -280 and  # antigo -200, -230
+        if (ball.ycor() <= -240 and ball.ycor() > -270 and  # antigo -200, -230
             ball.xcor() <= racket.xcor() - 74 and
-                ball.xcor() > racket.xcor() - 76):
+                ball.xcor() > racket.xcor() - 80):
             ball.dy *= -1
-            ball.dx *= -1
+            if ball.dx > 0:
+                ball.dx *= -1
             play(beep)
 
         # colisão do canto direito da raquete
-        if (ball.ycor() <= -250 and ball.ycor() > -280 and  # antigo -200, -230
-            ball.xcor() < racket.xcor() + 77 and
+        if (ball.ycor() <= -240 and ball.ycor() > -270 and  # antigo -200, -230
+            ball.xcor() < racket.xcor() + 80 and
                 ball.xcor() >= racket.xcor() + 74):
             ball.dy *= -1
-            ball.dx *= -1
+            if ball.dx < 0:
+                ball.dx *= -1
             play(beep)
 
         # Testa colisão quando a bola acima da metade da tela
