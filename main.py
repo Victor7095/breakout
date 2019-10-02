@@ -220,6 +220,7 @@ for i in range(0, 3):
     live_hud.goto(-330+(30*i), 265)
     lives_hud.append(live_hud)
 
+
 i = 0
 while hasLives:
     screen.update()
