@@ -50,14 +50,14 @@ def create_hud(shape, color):
 screen = turtle.Screen()
 screen.title(" Little Breakout ")
 screen.bgcolor("black")
-screen.setup(720, 480)
+screen.setup(720, 580) # 720,480 antigo
 screen.tracer(0)
 
 # pontuação
 score = 0
 scoreboard = create_hud("square", "white")
 scoreboard.hideturtle()
-scoreboard.goto(280, 200)
+scoreboard.goto(280, 250) # 280,200 antigo
 scoreboard.write("Score : {}".format(score), align="center",
                  font=("Press Start 2P", 18, "normal"))
 
@@ -71,14 +71,14 @@ def update_score_display():
 
 # Desenhando a bola.
 ball = create_hud("circle", "white")
-ball.goto(0, 0)
-ball.dx = random.choice((-1, 1)) * 1
+ball.goto(0, 30)
+ball.dx = random.choice((-1, 1)) * vel_inicial
 ball.dy = -1.7
 
 # Desenhando raquete.
 racket = create_hud("square", "blue")
 racket.turtlesize(1, 7)
-racket.sety(-220)
+racket.sety(-260)
 
 
 blocks = []
@@ -187,7 +187,7 @@ def colide(a, b):
 
 # desenhando os blocos
 x = -300
-y = 180
+y = 230 # antigo 180
 block_colors = ["red", "orange", "yellow", "green", "blue"]
 for i in range(len(block_colors)):
     line_of_blocks = []
@@ -218,7 +218,7 @@ for i in range(0, 3):
     live_hud = create_hud("turtle", "red")
     # isso se chama gambiarra, e sim vou mudar a posição das vidas pra cima;
     # Mas só quando arrumarem a parte superior da tela e tal
-    live_hud.goto(-330+(30*i), 215)
+    live_hud.goto(-330+(30*i), 265)
     lives_hud.append(live_hud)
 
 i = 0
@@ -236,7 +236,7 @@ while hasLives:
         ball.setx(ball.xcor() + ball.dx)
 
         # Colisão com a parede superior
-        if (ball.ycor() > 230):
+        if (ball.ycor() > 315):
             ball.dy *= -1
             play(plop)
 
@@ -251,7 +251,7 @@ while hasLives:
             play(plop)
 
         # Colisão com a raquete
-        if (ball.ycor() < -200 and ball.ycor() > -205 and
+        if (ball.ycor() < -250 and ball.ycor() > -255 and # antigo -200, -205
             ball.xcor() < racket.xcor() + 74 and
                 ball.xcor() > racket.xcor() - 74):
             ball.dy *= -1
@@ -259,7 +259,7 @@ while hasLives:
             play(beep)
 
         # colisão do canto esquerdo da raquete
-        if (ball.ycor() <= -200 and ball.ycor() > -230 and
+        if (ball.ycor() <= -250 and ball.ycor() > -280 and # antigo -200, -230
             ball.xcor() <= racket.xcor() - 74 and
                 ball.xcor() > racket.xcor() - 76):
             ball.dy *= -1
@@ -267,7 +267,7 @@ while hasLives:
             play(beep)
 
         # colisão do canto direito da raquete
-        if (ball.ycor() <= -200 and ball.ycor() > -230 and
+        if (ball.ycor() <= -250 and ball.ycor() > -280 and # antigo -200, -230
             ball.xcor() < racket.xcor() + 77 and
                 ball.xcor() >= racket.xcor() + 74):
             ball.dy *= -1
@@ -312,7 +312,7 @@ while hasLives:
                 message.write("Game Over", align="center",
                               font=("Press Start 2P", 40, "normal"))
                 time.sleep(3)
-            ball.goto(0, 0)
+            ball.goto(0, 30)
             racket.setx(0)
             if (lives > 0):
                 i = 0
