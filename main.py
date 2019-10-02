@@ -35,7 +35,7 @@ def play(sound):
 
 
 # isso é só pra tentar deixar a criação de hud numa função só,
-# se acharem merda podem apagar;
+# se acharem merda podem apagar
 # Mas já implementei na criação das parada tudo só lamento
 def create_hud(shape, color):
     hud = turtle.Turtle()
@@ -71,7 +71,7 @@ def update_score_display():
 
 # Desenhando a bola.
 ball = create_hud("circle", "white")
-ball.goto(0, 30)
+ball.goto(0, 50)
 ball.dx = random.choice((-1, 1)) * vel_inicial
 ball.dy = -1.7
 
@@ -121,18 +121,19 @@ def angle(x1, x2, div=17.5):
 
 # tempo entre as derrotas
 def wait():
-    ball.goto(0, 0)
+    ball.goto(0, 50)
     timer = create_hud("square", "white")
     timer.hideturtle()
+    timer.goto(0, -30)
     i = 3
     while i > 0:
         timer.write("{}".format(i), align="center",
-                    font=("Press Start 2P", 40, "normal"))
+                    font=("Press Start 2P", 30, "normal"))
         timer.clear()
         time.sleep(1)
         i -= 1
     set_state("playing")
-    timer.goto(0, 4)
+    
 
 
 # Pausar o jogo
@@ -216,8 +217,6 @@ def ball_pass():
 lives_hud = []
 for i in range(0, 3):
     live_hud = create_hud("turtle", "red")
-    # isso se chama gambiarra, e sim vou mudar a posição das vidas pra cima;
-    # Mas só quando arrumarem a parte superior da tela e tal
     live_hud.goto(-330+(30*i), 265)
     lives_hud.append(live_hud)
 
@@ -312,7 +311,7 @@ while hasLives:
                 message.write("Game Over", align="center",
                               font=("Press Start 2P", 40, "normal"))
                 time.sleep(3)
-            ball.goto(0, 30)
+            ball.goto(0, 50)
             racket.setx(0)
             if (lives > 0):
                 i = 0
