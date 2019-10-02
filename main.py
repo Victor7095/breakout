@@ -15,6 +15,9 @@ peep = 'peep.wav'
 plop = 'plop.wav'
 game_over = 'game_over.wav'
 
+# Velocidade de inicio de X
+
+vel_inicial = 1
 
 # isso é só pra tentar deixar a criação de hud numa função só,
 # se acharem merda podem apagar;
@@ -48,13 +51,13 @@ scoreboard.write("Score : {}".format(score), align="center",
 def update_score_display():
     scoreboard.clear()
     scoreboard.write("Score : {}".format(score), align="center",
-                     font=("Press Start 2P", 18, "normal"))
+                     font=("Press Stngulação da bola ao rebater na raquetert 2P", 18, "normal"))
 
 
 # Desenhando a bola.
 ball = create_hud("circle", "white")
 ball.goto(0, 0)
-ball.dx = random.choice((-1, 1)) * 1
+ball.dx = random.choice((-1, 1)) * vel_inicial
 ball.dy = -1.7
 
 # Desenhando raquete.
@@ -87,17 +90,15 @@ def racket_right():
     racket.setx(x)
 
 
-# angulação da bola ao rebater na raquete
-def angle():
-    x1 = racket.xcor()
-    x2 = ball.xcor()
+# Função para angulo
+def angle(x1, x2, div = 17.5):
     signal = 1 if ball.dx >= 0 else -1
     dist_of_points = ((x2-x1)**2)**(0.5)
-    racket_angle = (dist_of_points//17.5)+1
+    racket_angle = (dist_of_points//div)+1
     if(dist_of_points >= 0 and dist_of_points < 1):
         return 0
     else:
-        return signal*(1+(racket_angle/10))
+        return signal*(vel_inicial+(racket_angle/10))
 
 # tempo entre as derrotas
 
@@ -140,15 +141,18 @@ def colide(a, b):
              (yA + heightA >= yB + heightB and yA <= yB + heightB))):
             print(int(xA), int(xB), int(widthA), int(widthB),
                   int(yA), int(yB), int(heightA), int(heightB))
+            ball.dx = angle(xA, xB, 10)
             return True
 
     elif (a.dx < 0):
         if (xA <= xB + widthB and xA + widthA >= xB + widthB and
             ((yA + heightA >= yB and yA <= yB) or
              (yA + heightA >= yB + heightB and yA <= yB + heightB))):
+            ball.dx = angle(xA, xB, 10)
             return True
     if(xA + widthA >= xB and xA <= xB + widthB and
        yA + heightA >= yB and yA <= yB + heightB):
+        ball.dx = angle(xA, xB, 10)
         return True
     return False
 
@@ -228,7 +232,7 @@ while hasLives:
         ball.xcor() < racket.xcor() + 74 and
             ball.xcor() > racket.xcor() - 74):
         ball.dy *= -1
-        ball.dx = angle()
+        ball.dx = angle(racket.xcor(), ball.xcor())
         play(beep)
 
     # colisão do canto esquerdo da raquete
