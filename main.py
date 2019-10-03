@@ -189,7 +189,7 @@ def colide(a, b):
 # desenhando os blocos
 x = -310
 y = 230  # antigo 180
-block_colors = ["red", "orange", "yellow", "green", "blue"]
+block_colors = ["red", "orange", "yellow", "green", "blue","purple"]
 for i in range(len(block_colors)):
     line_of_blocks = []
     line_of_destroyed_blocks = [False] * 8
@@ -283,7 +283,7 @@ while hasLives:
                     if not destroyed_blocks[i][j] and colide(ball, block):
                         destroyed_blocks[i][j] = True
                         block.hideturtle()
-                        score += (5-i)
+                        score += (len(block_colors)-i)
                         update_score_display()
                         ball.dy *= -1
                         play(plop)
@@ -316,7 +316,7 @@ while hasLives:
                 play(game_over)
                 message.write("Game Over", align="center",
                               font=("Press Start 2P", 40, "normal"))
-                time.sleep(13)
+                time.sleep(5)
                 message.clear()
             ball.goto(0, 50)
             racket.setx(0)
