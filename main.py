@@ -19,12 +19,14 @@ peep = 'peep.wav'
 plop = 'plop.wav'
 game_over = 'game_over.wav'
 victory = 'victory.wav'
-
+songs = ['song1.wav', 'song2.wav', 'song3.wav', 'song4.wav']
 
 # Alterar variáavel que mantém o estado do jogo
 # playing - Jogo em execução (comandos permitidos)
 # paused - Jogo pausado (possível apenas despausar)
 # starting/gameover - Jogo iniciando/terminando (sem comandos disponíveis)
+
+
 def set_state(new_state):
     global state
     state = new_state
@@ -189,7 +191,7 @@ def colide(a, b):
 # desenhando os blocos
 x = -310
 y = 230  # antigo 180
-block_colors = ["red", "orange", "yellow", "green", "blue","purple"]
+block_colors = ["red", "orange", "yellow", "green", "blue", "purple"]
 for i in range(len(block_colors)):
     line_of_blocks = []
     line_of_destroyed_blocks = [False] * 8
@@ -222,6 +224,7 @@ for i in range(0, 3):
 
 
 i = 0
+play(random.choice(songs))
 while hasLives:
     screen.update()
 
