@@ -61,7 +61,7 @@ screen.tracer(0)
 score = 0
 scoreboard = create_hud("square", "white")
 scoreboard.hideturtle()
-scoreboard.goto(280, 250)  # 280,200 antigo
+scoreboard.goto(180, 250)  # 280,200 antigo
 scoreboard.write("Score : {}".format(score), align="center",
                  font=("Press Start 2P", 18, "normal"))
 
