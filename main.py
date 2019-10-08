@@ -146,6 +146,19 @@ def pause():
         set_state("playing")
 
 
+# Controle para movar raquete com o mouse/touchpad
+def onmove(self, racket):
+    def moveracket(event):
+        if(state == "playing"):
+            if self.cv.canvasx(event.x) < -285:
+                racket.setx(-285)
+            elif self.cv.canvasx(event.x) > 285:
+                racket.setx(285)
+            else:
+                racket.setx(self.cv.canvasx(event.x) / self.xscale)
+    self.cv.bind('<Motion>', moveracket)
+
+
 # controles
 screen.listen()
 screen.onkeypress(racket_left, 'a')
@@ -153,6 +166,7 @@ screen.onkeypress(racket_right, 'd')
 screen.onkeypress(racket_left, 'Left')
 screen.onkeypress(racket_right, 'Right')
 screen.onkeypress(pause, 'p')
+onmove(screen, racket)
 
 
 # diz se houve colisão entre dois objetos
