@@ -14,19 +14,20 @@ state = "starting"
 # Velocidade de inicio de X
 vel_inicial = 1
 
-beep = 'beep.wav'
-peep = 'peep.wav'
-plop = 'plop.wav'
-game_over = 'game_over.wav'
-victory = 'victory.wav'
-songs = ['song1.wav', 'song2.wav', 'song3.wav', 'song4.wav']
+SOUNDS_PATH = "sounds/"
+beep = SOUNDS_PATH+'beep.wav'
+peep = SOUNDS_PATH+'peep.wav'
+plop = SOUNDS_PATH+'plop.wav'
+game_over = SOUNDS_PATH+'game_over.wav'
+victory = SOUNDS_PATH+'victory.wav'
+sounds = ['song1.wav', 'song2.wav', 'song3.wav', 'song4.wav']
+sounds = [SOUNDS_PATH+song for song in sounds]
+
 
 # Alterar variáavel que mantém o estado do jogo
 # playing - Jogo em execução (comandos permitidos)
 # paused - Jogo pausado (possível apenas despausar)
 # starting/gameover - Jogo iniciando/terminando (sem comandos disponíveis)
-
-
 def set_state(new_state):
     global state
     state = new_state
@@ -238,7 +239,7 @@ for i in range(0, 3):
 
 
 i = 0
-play(random.choice(songs))
+play(random.choice(sounds))
 while hasLives:
     screen.update()
 
