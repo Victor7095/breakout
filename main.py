@@ -5,6 +5,7 @@ import time
 import simpleaudio as sa
 import threading
 from menu import create_menu
+from modules.sounds import play, play_background, set_music_state
 
 # Variável de controle do laço principal
 hasLives = True
@@ -58,33 +59,7 @@ def create_screen():
 def set_state(new_state):
     global state
     state = new_state
-
-
-# função para tocar som
-def play(sound):
-    wave_obj = sa.WaveObject.from_wave_file(sound)
-    wave_obj.play()
-
-
-def loop_play():
-    global selected_sound
-    if not selected_sound:
-        selected_sound = random.choice(sounds)
-    wave_obj = sa.WaveObject.from_wave_file(selected_sound)
-    play_obj = wave_obj.play()
-    while state == "playing":
-        print(selected_sound)
-        if not play_obj.is_playing():
-            play_obj = wave_obj.play()
-    play_obj.stop()
-
-
-def play_background():
-    global bg_thread
-    if not bg_thread:
-        bg_thread = threading.Thread(target=loop_play)
-        bg_thread.setDaemon(True)
-        bg_thread.start()
+    set_music_state(state)
 
 
 # isso é só pra tentar deixar a criação de hud numa função só,
@@ -155,7 +130,7 @@ def wait():
         time.sleep(1)
         i -= 1
     set_state("playing")
-    play_background()
+    play_background(bg_thread, state, sounds)
 
 
 # Pausar o jogo
@@ -165,7 +140,7 @@ def pause():
         bg_thread.join()
     elif state == "paused":
         set_state("playing")
-        play_background()
+        play_background(bg_thread, state, sounds)
 
 
 # Controle para movar raquete com o mouse/touchpad
@@ -405,6 +380,6 @@ while hasLives:
                 play(game_over)
                 message.write("Game Over", align="center",
                               font=("Press Start 2P", 40, "normal"))
-                time.sleep(7)
+                time.sleep(13)
                 message.clear()
                 set_state("menu")
