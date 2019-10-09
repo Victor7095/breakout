@@ -209,18 +209,19 @@ y = 230  # antigo 180
 block_colors = ["red", "orange", "yellow", "green", "blue", "purple"]
 for i in range(len(block_colors)):
     line_of_blocks = []
-    line_of_destroyed_blocks = [False] * 8
+    line_of_destroyed_blocks = [6-i] * 8
     destroyed_blocks.append(line_of_destroyed_blocks)
     for j in range(8):
         block = create_hud("square", block_colors[i])
         block.turtlesize(1, 4)
         block.goto(x, y)
-        block.color = block_colors[i]
+        block.color(block_colors[i])
         line_of_blocks.append(block)
         x += 88
-    y -= 30
     blocks.append(line_of_blocks)
+    y -= 30
     x = -310
+block_colors.reverse()
 
 
 # função que testa se a bola passou da raquete
@@ -296,37 +297,44 @@ while hasLives:
 
         # Testa colisão quando a bola acima da metade da tela
         if ball.ycor() > 0:
-            for (i, line) in enumerate(blocks):
-                for (j, block) in enumerate(line):
-                    if not destroyed_blocks[i][j] and colide(ball, block):
-                        destroyed_blocks[i][j] = True
-                        block.hideturtle()
-                        score += (len(block_colors)-i)
-                        update_score_display()
-                        ball.dy *= -1
+            for i in range(6):
+                for j in range(8):
+                    if destroyed_blocks[i][j] > 0 and colide(ball, blocks[i][j]):
                         play(plop)
+                        score += (6-i)
+                        update_score_display()
+                        destroyed_blocks[i][j] -= 1
+                        blocks[i][j].color(block_colors[destroyed_blocks[i][j]-1])
+                        ball.dy *= -1
+                        if destroyed_blocks[i][j] == 0:
+                            blocks[i][j].hideturtle()
 
-                        # Se todos os tijolos estiverem destruídos
-                        if all([all(line) for line in destroyed_blocks]):
-                            message = create_hud("square", "white")
-                            message.hideturtle()
-                            play(victory)
-                            message.write("Victory", align="center",
-                                          font=(
-                                              "Press Start 2P",
-                                              40,
-                                              "normal")
-                                          )
-                            time.sleep(5)
-                            message.clear()
-                            hasLives = False
+        soma = 0
+        for i in range(6):
+            for j in range(8):
+                soma += destroyed_blocks[i][j]
+
+        # Se todos os tijolos estiverem destruídos
+        if soma == 0:
+            message = create_hud("square", "white")
+            message.hideturtle()
+            play(victory)
+            message.write("Victory", align="center",
+                          font=("Press Start 2P", 40, "normal"))
+            time.sleep(5)
+            message.clear()
+            hasLives = False
 
         # testando se a bola passa da cory da raquete
         if (ball_pass()):
             lives -= 1
             lives_hud[lives].hideturtle()
             play(peep)
-            if (lives == 0):
+            ball.goto(0, 50)
+            racket.setx(0)
+            if (lives > 0):
+                i = 0
+            else:
                 set_state("gameover")
                 hasLives = False
                 message = create_hud("square", "white")
@@ -336,7 +344,3 @@ while hasLives:
                               font=("Press Start 2P", 40, "normal"))
                 time.sleep(5)
                 message.clear()
-            ball.goto(0, 50)
-            racket.setx(0)
-            if (lives > 0):
-                i = 0
