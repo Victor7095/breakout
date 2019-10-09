@@ -2,8 +2,8 @@ import random
 import sys
 import turtle
 import time
-import os
-
+import simpleaudio as sa
+import threading
 
 # Variável de controle do laço principal
 hasLives = True
@@ -35,7 +35,13 @@ def set_state(new_state):
 
 # função para tocar som
 def play(sound):
-    os.system('aplay '+sound+'&')
+    wave_obj = sa.WaveObject.from_wave_file(sound)
+    wave_obj.play()
+
+
+def play_background(sound):
+    wave_obj = sa.WaveObject.from_wave_file(sound)
+    wave_obj.play()
 
 
 # isso é só pra tentar deixar a criação de hud numa função só,
@@ -240,7 +246,7 @@ for i in range(0, 3):
 
 
 i = 0
-play(random.choice(sounds))
+play_background(random.choice(sounds))
 while hasLives:
     screen.update()
 
@@ -304,7 +310,8 @@ while hasLives:
                         score += (6-i)
                         update_score_display()
                         destroyed_blocks[i][j] -= 1
-                        blocks[i][j].color(block_colors[destroyed_blocks[i][j]-1])
+                        blocks[i][j].color(
+                            block_colors[destroyed_blocks[i][j]-1])
                         ball.dy *= -1
                         if destroyed_blocks[i][j] == 0:
                             blocks[i][j].hideturtle()
