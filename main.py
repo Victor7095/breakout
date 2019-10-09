@@ -4,18 +4,31 @@ import turtle
 import time
 import simpleaudio as sa
 import threading
+from menu import create_menu
 
 # Variável de controle do laço principal
 hasLives = True
 # Quantidade de vidas
 lives = 3
 # Estado do jogo
-state = "starting"
+state = "menu"
 # Velocidade de inicio de X
 vel_inicial = 1
 
 selected_sound = None
 bg_thread = None
+
+
+screen = None           # Instância da tela
+score = 0               # Pontuação do jogador
+scoreboard = None       # Objeto do placar de pontuação
+racket = None           # Objeto da raquete
+ball = None             # Objeto da bola
+blocks = []             # Matriz de objetos dos tijolos
+destroyed_blocks = []   # Matriz de controle de vida dos tijolos
+block_colors = ["red", "orange", "yellow", "green", "blue", "purple"]
+lives_hud = []          # Objeto do placar de pontuação
+option = []             # Opção selecionada no menu
 
 SOUNDS_PATH = "sounds/"
 beep = SOUNDS_PATH+'beep.wav'
@@ -25,6 +38,17 @@ game_over = SOUNDS_PATH+'game_over.wav'
 victory = SOUNDS_PATH+'victory.wav'
 sounds = ['song1.wav', 'song2.wav', 'song3.wav', 'song4.wav']
 sounds = [SOUNDS_PATH+song for song in sounds]
+
+
+# Criando a tela.
+def create_screen():
+    global screen
+    screen = turtle.Screen()
+    screen.clear()
+    screen.title("Little Breakout ")
+    screen.bgcolor("black")
+    screen.setup(720, 580)  # 720,480 antigo
+    screen.tracer(0)
 
 
 # Alterar variáavel que mantém o estado do jogo
@@ -75,43 +99,11 @@ def create_hud(shape, color):
     return hud
 
 
-# Criando a tela.
-screen = turtle.Screen()
-screen.title(" Little Breakout ")
-screen.bgcolor("black")
-screen.setup(720, 580)  # 720,480 antigo
-screen.tracer(0)
-
-# pontuação
-score = 0
-scoreboard = create_hud("square", "white")
-scoreboard.hideturtle()
-scoreboard.goto(280, 250)  # 280,200 antigo
-scoreboard.write("Score : {}".format(score), align="center",
-                 font=("Press Start 2P", 18, "normal"))
-
-
 # display de pontuação
 def update_score_display():
     scoreboard.clear()
     scoreboard.write("Score : {}".format(score), align="center",
                      font=("Press Start 2P", 18, "normal"))
-
-
-# Desenhando a bola.
-ball = create_hud("circle", "white")
-ball.goto(0, 50)
-ball.dx = random.choice((-1, 1)) * vel_inicial
-ball.dy = -1.7
-
-# Desenhando raquete.
-racket = create_hud("square", "blue")
-racket.turtlesize(1, 7)
-racket.sety(-260)
-
-
-blocks = []
-destroyed_blocks = []
 
 
 # Movimentando a raquete esquerda
@@ -150,7 +142,8 @@ def angle(x1, x2, div=17.5):
 
 # tempo entre as derrotas
 def wait():
-    ball.goto(0, 50)
+    ball.goto(0, -235)
+    screen.update()
     timer = create_hud("square", "white")
     timer.hideturtle()
     timer.goto(0, -30)
@@ -188,16 +181,6 @@ def onmove(self, racket):
     self.cv.bind('<Motion>', moveracket)
 
 
-# controles
-screen.listen()
-screen.onkeypress(racket_left, 'a')
-screen.onkeypress(racket_right, 'd')
-screen.onkeypress(racket_left, 'Left')
-screen.onkeypress(racket_right, 'Right')
-screen.onkeypress(pause, 'p')
-onmove(screen, racket)
-
-
 # diz se houve colisão entre dois objetos
 def colide(a, b):
     widthA = a.turtlesize()[1] * 20
@@ -231,27 +214,6 @@ def colide(a, b):
     return False
 
 
-# desenhando os blocos
-x = -310
-y = 230  # antigo 180
-block_colors = ["red", "orange", "yellow", "green", "blue", "purple"]
-for i in range(len(block_colors)):
-    line_of_blocks = []
-    line_of_destroyed_blocks = [6-i] * 8
-    destroyed_blocks.append(line_of_destroyed_blocks)
-    for j in range(8):
-        block = create_hud("square", block_colors[i])
-        block.turtlesize(1, 4)
-        block.goto(x, y)
-        block.color(block_colors[i])
-        line_of_blocks.append(block)
-        x += 88
-    blocks.append(line_of_blocks)
-    y -= 30
-    x = -310
-block_colors.reverse()
-
-
 # função que testa se a bola passou da raquete
 def ball_pass():
     if (ball.ycor() < racket.ycor() - 20):
@@ -259,24 +221,98 @@ def ball_pass():
     return False
 
 
-# criando uma lista de hud das vidinhas, botei uma tortuguinha pq é mt fofinho
-lives_hud = []
-for i in range(0, 3):
-    live_hud = create_hud("turtle", "red")
-    live_hud.goto(-330+(30*i), 265)
-    lives_hud.append(live_hud)
+def draw_game():
+    create_screen()
+
+    # pontuação
+    global score
+    score = 0
+    global scoreboard
+    scoreboard = create_hud("square", "white")
+    scoreboard.hideturtle()
+    scoreboard.goto(280, 250)  # 280,200 antigo
+    scoreboard.write("Score : {}".format(score), align="center",
+                     font=("Press Start 2P", 18, "normal"))
+
+    # Desenhando a bola.
+    global ball
+    ball = create_hud("circle", "white")
+    ball.goto(0, -235)
+    ball.dx = random.choice((-1, 1)) * vel_inicial
+    ball.dy = 1.7
+
+    # Desenhando raquete.
+    global racket
+    racket = create_hud("square", "blue")
+    racket.turtlesize(1, 7)
+    racket.sety(-260)
+
+    # controles
+    screen.listen()
+    screen.onkeypress(racket_left, 'a')
+    screen.onkeypress(racket_right, 'd')
+    screen.onkeypress(racket_left, 'Left')
+    screen.onkeypress(racket_right, 'Right')
+    screen.onkeypress(pause, 'p')
+    onmove(screen, racket)
+
+    # desenhando os blocos
+    global destroyed_blocks
+    destroyed_blocks = []
+    global blocks
+    blocks = []
+    x = -310
+    y = 230  # antigo 180
+    for i in range(len(block_colors)):
+        line_of_blocks = []
+        line_of_destroyed_blocks = [6-i] * 8
+        destroyed_blocks.append(line_of_destroyed_blocks)
+        for _ in range(8):
+            block = create_hud("square", block_colors[i])
+            block.turtlesize(1, 4)
+            block.goto(x, y)
+            block.color(block_colors[i])
+            line_of_blocks.append(block)
+            x += 88
+        blocks.append(line_of_blocks)
+        y -= 30
+        x = -310
+    block_colors.reverse()
+
+    # criando uma lista de hud das vidinhas, botei uma tortuguinha
+    global lives_hud
+    lives_hud = []
+    for i in range(0, 3):
+        live_hud = create_hud("turtle", "red")
+        live_hud.goto(-330+(30*i), 265)
+        lives_hud.append(live_hud)
+    screen.update()
 
 
 i = 0
 while hasLives:
-    screen.update()
+    if state == "menu":
+        option = []
+        create_screen()
+        create_menu(screen, option)
+        state = "waiting"
 
-    if (i == 0):
-        wait()
-        i = 1
+    screen.update()
+    if len(option) > 0:
+        if option[0] == "Iniciar" and state == "waiting":
+            draw_game()
+            wait()
+            set_state("playing")
+        if option[0] == "Sair" and state == "waiting":
+            sys.exit(0)
+
+    if state == "starting":
+        if (i == 0):
+            wait()
+            set_state("playing")
+            i = 1
 
     if state == "playing":
-
         # movimentando a bola
         ball.sety(ball.ycor() + ball.dy)
         ball.setx(ball.xcor() + ball.dx)
@@ -349,26 +385,26 @@ while hasLives:
             play(victory)
             message.write("Victory", align="center",
                           font=("Press Start 2P", 40, "normal"))
-            time.sleep(5)
+            time.sleep(8)
             message.clear()
-            hasLives = False
+            set_state("menu")
 
         # testando se a bola passa da cory da raquete
         if (ball_pass()):
             lives -= 1
             lives_hud[lives].hideturtle()
             play(peep)
-            ball.goto(0, 50)
-            racket.setx(0)
+            set_state("starting")
+            ball.dy *= -1
             if (lives > 0):
                 i = 0
             else:
                 set_state("gameover")
-                hasLives = False
                 message = create_hud("square", "white")
                 message.hideturtle()
                 play(game_over)
                 message.write("Game Over", align="center",
                               font=("Press Start 2P", 40, "normal"))
-                time.sleep(5)
+                time.sleep(7)
                 message.clear()
+                set_state("menu")
