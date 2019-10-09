@@ -14,6 +14,9 @@ state = "starting"
 # Velocidade de inicio de X
 vel_inicial = 1
 
+selected_sound = None
+bg_thread = None
+
 SOUNDS_PATH = "sounds/"
 beep = SOUNDS_PATH+'beep.wav'
 peep = SOUNDS_PATH+'peep.wav'
@@ -39,9 +42,25 @@ def play(sound):
     wave_obj.play()
 
 
-def play_background(sound):
-    wave_obj = sa.WaveObject.from_wave_file(sound)
-    wave_obj.play()
+def loop_play():
+    global selected_sound
+    if not selected_sound:
+        selected_sound = random.choice(sounds)
+    wave_obj = sa.WaveObject.from_wave_file(selected_sound)
+    play_obj = wave_obj.play()
+    while state == "playing":
+        print(selected_sound)
+        if not play_obj.is_playing():
+            play_obj = wave_obj.play()
+    play_obj.stop()
+
+
+def play_background():
+    global bg_thread
+    if not bg_thread:
+        bg_thread = threading.Thread(target=loop_play)
+        bg_thread.setDaemon(True)
+        bg_thread.start()
 
 
 # isso é só pra tentar deixar a criação de hud numa função só,
@@ -67,7 +86,7 @@ screen.tracer(0)
 score = 0
 scoreboard = create_hud("square", "white")
 scoreboard.hideturtle()
-scoreboard.goto(180, 250)  # 280,200 antigo
+scoreboard.goto(280, 250)  # 280,200 antigo
 scoreboard.write("Score : {}".format(score), align="center",
                  font=("Press Start 2P", 18, "normal"))
 
@@ -143,14 +162,17 @@ def wait():
         time.sleep(1)
         i -= 1
     set_state("playing")
+    play_background()
 
 
 # Pausar o jogo
 def pause():
     if state == "playing":
         set_state("paused")
+        bg_thread.join()
     elif state == "paused":
         set_state("playing")
+        play_background()
 
 
 # Controle para movar raquete com o mouse/touchpad
@@ -204,7 +226,7 @@ def colide(a, b):
 
     if(xA + widthA >= xB and xA <= xB + widthB and
        yA + heightA >= yB and yA <= yB + heightB):
-        ball.dx = angle(xA, xB, 10)
+        ball.dy *= -1
         return True
     return False
 
@@ -246,7 +268,6 @@ for i in range(0, 3):
 
 
 i = 0
-play_background(random.choice(sounds))
 while hasLives:
     screen.update()
 
@@ -305,14 +326,14 @@ while hasLives:
         if ball.ycor() > 0:
             for i in range(6):
                 for j in range(8):
-                    if destroyed_blocks[i][j] > 0 and colide(ball, blocks[i][j]):
+                    if(destroyed_blocks[i][j] > 0 and
+                       colide(ball, blocks[i][j])):
                         play(plop)
                         score += (6-i)
                         update_score_display()
                         destroyed_blocks[i][j] -= 1
                         blocks[i][j].color(
                             block_colors[destroyed_blocks[i][j]-1])
-                        ball.dy *= -1
                         if destroyed_blocks[i][j] == 0:
                             blocks[i][j].hideturtle()
 
