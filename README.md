@@ -8,7 +8,7 @@ laterais e superiores da tela. Quando um tijolo é atingido, a bola rebate de vo
 - Ivan Portales : https://github.com/ivanportales
 - José Jordan Giordano Alcântara: https://github.com/JordanJose
 - Murilo de Lima Acácio : https://github.com/Murillo-Acacio
-- Paulo André : https://github.com/Pauloacf
+- Paulo André Carneiro Fernandes : https://github.com/Pauloacf
 - Victor Yan Pereira e Lima : https://github.com/Victor7095
 
 ## Content
